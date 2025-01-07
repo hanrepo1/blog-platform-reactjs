@@ -312,6 +312,44 @@ footer {
 
 
 
+/*=============COMMENT SECTION==============*/
+.comment {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .comment-author {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .comment-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .comment-date {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 10px;
+  }
+  
+  .add-comment {
+    margin-top: 3rem;
+  }
+  
+  .add-comment-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+
+
+
 /*==============REGISTER & FORM==============*/
 .form {
     display: flex;
@@ -507,6 +545,23 @@ input, select, textarea {
     height: 10rem !important;
 }
 
+/*==============LOADER==============*/
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    place-items: center;
+    background: var(--color-bg);
+}
+
+.loader__image {
+    width: 4,5rem;
+    aspect-ratio: 1/1;
+}
+
 
 
 
@@ -514,16 +569,16 @@ input, select, textarea {
 /*==============MEDIA QUERY (small devices)==============*/
 @media screen and (max-width: 800px) {
     h1 {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
     h2 {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
     h3 {
-        font-size: 1.2rem;
+        font-size: 1.35rem;
     }
     h4 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
     h5 {
         font-size: 1rem;
@@ -552,18 +607,80 @@ input, select, textarea {
     .nav__menu li {
         width: 100%;
         box-shadow: -2rem 4rem 4rem rgba(0, 0, 0, 0.26);
+        animation: dropDown 500ms ease forwards;
+        opacity: 0;
+        transform: rotateX(90deg);
+        transform-origin: top;
+    }
+
+    @keyframes dropDown {
+        to {
+            opacity: 1;
+            transform: rotateX(0);
+        }
+    }
+
+    .nav__menu li:nth-child(2) {
+        animation-delay: 300ms;
+    }
+    .nav__menu li:nth-child(3) {
+        animation-delay: 600ms;
+    }
+    .nav__menu li:nth-child(4) {
+        animation-delay: 900ms;
     }
 
     .nav__menu li a {
         display: block;
         background: var(--color-white);
         padding: 0.85rem 2.5rem;
-    }
+    }  
 
     .nav__toggle-btn {
         display: inline-block;
         background: transparent;
         font-family: 1.5rem;
         cursor: pointer;
+    }
+
+    .posts__container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .footer__categories {
+        flex-direction: column;
+    }
+
+    .post-detail {
+        width: 100%;
+        background: transparent;
+        padding: 0;
+    }
+
+    .register, .login, .create-post {
+        width: 100%;
+    }
+
+    .form.profile__form {
+        margin-top: 2.5rem;
+        width: 100%;
+    }
+
+    .authors__container {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    .dashboard__post {
+        flex-direction: column;
+    }
+
+    .dashboard__post-info {
+        gap: 1.5rem;
+    }
+
+    .dashboard__post-thumbnail {
+        width: 5rem;
     }
 }

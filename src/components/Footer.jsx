@@ -12,7 +12,7 @@ const Footer = () => {
         <li><Link to="/posts/categories/Art">Art</Link></li>
         <li><Link to="/posts/categories/Investment">Investment</Link></li>
         <li><Link to="/posts/categories/Uncategorized">Uncategorized</Link></li>
-        <li><Link to="/posts/categories/Business">Weather</Link></li>
+        <li><Link to="/posts/categories/Weather">Weather</Link></li>
       </ul>
       <div className="footer__copyright">
         <small>All Rights Reserved &copy; Copyright, HP Project</small>

@@ -1,12 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { useNavigate, useParams } from 'react-router-dom'
+import { UserContext } from '../context/userContext'
+import axios from 'axios'
 
 const EditPost = () => {
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('Uncategorized')
   const [description, setDescription] = useState('')
   const [thumbnail, setThumbnail] = useState('')
+  const [error, setError] = useState('')
+
+  const {currentUser} = useContext(UserContext)
+  const token = currentUser?.token
+  const navigate = useNavigate()
+
+  const {id} = useParams()
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/')
+    }
+  }, [])
 
   const modules = {
     toolbar: [
@@ -27,14 +43,46 @@ const EditPost = () => {
 
   const POST_CATEGORIES = ["Agriculture", "Business", "Education", "Entertainment", "Art", "Investment", "Uncategorized", "Weather"]
 
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/posts/${id}`)
+        setTitle(response.data.title)
+        setCategory(response.data.category)
+        setDescription(response.data.description)
+        setThumbnail(response.data.thumbnail)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getPost()
+  }, [])
+
+  const editPost = async (e) => {
+    e.preventDefault()
+
+    const postData = new FormData()
+    postData.set('title', title)
+    postData.set('category', category)
+    postData.set('description', description)
+    postData.set('thumbnail', thumbnail)
+
+    try {
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/posts/${id}`, postData, {withCredentials: true, headers: {Authorization: `Bearer ${token}`}})
+      if (response.status === 200) {
+        return navigate('/')
+      }
+    } catch (error) {
+      setError(error.response.data.message)
+    }
+  }
+
   return (
     <section className="create-post">
       <div className="container">
         <h2>Edit Post</h2>
-        <p className='form__error-message'>
-          This is an error message
-        </p>
-        <form className="form create-post_form">
+        {error && <p className='error'>{error}</p>}
+        <form className="form create-post_form" onSubmit={editPost}>
           <input type="text" placeholder='Title' value={title} onChange={e => setTitle(e.target.value)} autoFocus/>
           <select name="category" value={category} onChange={e => setCategory(e.target.value)}>
             {
