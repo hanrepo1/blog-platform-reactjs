@@ -146,41 +146,45 @@ const PostDetail = () => {
             <img src={`${process.env.REACT_APP_ASSETS_URL}/uploads/${post.thumbnail}`} alt="Post thumbnail" />
           </div>
           <p dangerouslySetInnerHTML={{ __html: post.description }}></p>
-          <h2 className="title">Comments</h2>
-          {comments.map(comment => (
-            <div key={comment._id} className="comment">
-              <div className="comment-author">{comment.name}</div>
-              {editCommentId === comment._id ? (
-                <div className="edit-comment">
-                  <textarea
-                    value={editCommentContent}
-                    onChange={(e) => setEditCommentContent(e.target.value)}
-                    className="form-control"
-                  />
-                  <button className="btn sm primary" onClick={() => saveEditComment(comment._id)}>Save</button>
-                  <button className="btn sm danger" onClick={() => setEditCommentId(null)}>Cancel</button>
-                </div>
-              ) : (
-                <>
-                  <div className="comment-text" dangerouslySetInnerHTML={{ __html: comment.content }}></div>
-                  <div className="comment-date">Updated at: <ReactTimeAgo date={new Date(comment.updatedAt)} locale='en-US'/></div>
-                  {currentUser.id === comment.userId && (
-                    <div className="comment-buttons">
-                      <button className="btn sm primary" onClick={() => editComment(comment._id, comment.content)}>Edit</button>
-                      <button className="btn sm danger" onClick={() => deleteComment(comment._id)}>Delete</button>
-                    </div>
-                  )}
-                </>
-              )}
+          {currentUser && 
+          <div>
+            <h2 className="title">Comments</h2>
+            {comments.map(comment => (
+              <div key={comment._id} className="comment">
+                <div className="comment-author">{comment.name}</div>
+                {editCommentId === comment._id ? (
+                  <div className="edit-comment">
+                    <textarea
+                      value={editCommentContent}
+                      onChange={(e) => setEditCommentContent(e.target.value)}
+                      className="form-control"
+                    />
+                    <button className="btn sm primary" onClick={() => saveEditComment(comment._id)}>Save</button>
+                    <button className="btn sm danger" onClick={() => setEditCommentId(null)}>Cancel</button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="comment-text" dangerouslySetInnerHTML={{ __html: comment.content }}></div>
+                    <div className="comment-date">Updated at: <ReactTimeAgo date={new Date(comment.updatedAt)} locale='en-US'/></div>
+                    {currentUser.id === comment.userId && (
+                      <div className="comment-buttons">
+                        <button className="btn sm primary" onClick={() => editComment(comment._id, comment.content)}>Edit</button>
+                        <button className="btn sm danger" onClick={() => deleteComment(comment._id)}>Delete</button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
+            <div className="add-comment">
+              <h3 className="add-comment-title">Add a Comment</h3>
+              <form className="form create-post_form" onSubmit={createComment}>
+                <ReactQuill modules={modules} formats={formats} value={addComment} onChange={setAddComment} />
+                <button type="submit" className='btn primary'>Add Comment</button>
+              </form>
             </div>
-          ))}
-          <div className="add-comment">
-            <h3 className="add-comment-title">Add a Comment</h3>
-            <form className="form create-post_form" onSubmit={createComment}>
-              <ReactQuill modules={modules} formats={formats} value={addComment} onChange={setAddComment} />
-              <button type="submit" className='btn primary'>Add Comment</button>
-            </form>
           </div>
+          }
         </div>
       )}
     </section>
